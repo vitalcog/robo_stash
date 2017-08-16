@@ -1,0 +1,20 @@
+{
+  "name": "robostache",
+  "version": "1.0.0",
+  "description": "Run before you crawl!",
+  "main": "node.js",
+  "scripts": {
+    "test": "woop, daye it is..."
+  },
+  "keywords": [
+    "robo",
+    "stache"
+  ],
+  "author": "Me mutha ******",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "chalk": "^2.1.0",
+    "express": "^4.15.4",
+    "mustache-express": "^1.2.5"
+  }
+}
