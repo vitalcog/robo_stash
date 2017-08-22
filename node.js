@@ -13,14 +13,12 @@ app.set('views', './views');
 
 app.use(express.static('publick'));
 
-
+//    ---   |||   ---   |||   ---   \\
 
 mongo.connect('mongodb://localhost:27017/robots', function (err, db) {
   const robots = db.collection('robots');
   app.get('/', function (request, response) {
-
     robots.find( { job: {$ne: null} } ).toArray().then(function (robots) {
-
       response.render('html', {
         display: robots
       });
@@ -38,11 +36,5 @@ mongo.connect('mongodb://localhost:27017/robots', function (err, db) {
 app.post('/jobless', function (request, response) {
   response.redirect('/');
 });
-
-
-
-
-
-
 
 app.listen(3000);
