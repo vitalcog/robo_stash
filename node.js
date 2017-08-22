@@ -1,52 +1,48 @@
-//    I somewhat understand the need for this stuff   //
 const express = require('express');
-
 const app = express();
-
 const mustEx = require('mustache-express');
-
 const chalk = require('chalk');
-
 const file = require('fs');
-//    I somewhat understand the need for this stuff   //
-
-console.log(chalk.cyan("testing... ") + chalk.red("This is the just the begining"));
+const mongo = require('mongodb').MongoClient;
 
 //    ---   ---   ---   ---   ---   //
 
-file.readFile('user.json', function (err, contents) {
-  const user = JSON.parse(contents);
-})
-
-//    I don't understand this line    //
-app.use(express.static('public'));
-//    Ask about this line...    //
-
-
-//    I do understand this section somewhat   ---   //
-app.listen(3000, function () {
-  console.log(chalk.inverse("success initializing begining phase of roboStache web app creation"));
-});
-//    Port stuff, don't need to ask as much as other things...    //
-
-
-
-//    I don't know what this section does....   //
 app.engine('mustache', mustEx() );
 app.set('view engine', 'mustache');
-app.set('views', __dirname + '/views');
-//    Nooooo idea... I should ask about this  //
+app.set('views', './views');
+
+app.use(express.static('publick'));
 
 
-console.log(chalk.white("if it wasn't for " + (chalk.magenta("CHALK") + (" this would be horiblly boring..."))));
 
+mongo.connect('mongodb://localhost:27017/robots', function (err, db) {
+  const robots = db.collection('robots');
+  app.get('/', function (request, response) {
 
-//    I kinda get this, but I don't understand the render   //
-app.get('/', function (req, res) {
- res.send('whaaaaaat??!')
-})
+    robots.find( { job: {$ne: null} } ).toArray().then(function (robots) {
 
-app.get('/', function(req, res){
-  res.render("html", );
+      response.render('html', {
+        display: robots
+      });
+    });
+  });
+  app.post('/', function (request, response) {
+    robots.find( { job: null } ).toArray().then(function (robots) {
+      response.render('htmlJobless', {
+        display: robots
+      });
+    });
+  });
 });
-//    Ask about the render...   --    //
+
+app.post('/jobless', function (request, response) {
+  response.redirect('/');
+});
+
+
+
+
+
+
+
+app.listen(3000);
